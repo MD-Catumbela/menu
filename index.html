@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Refeições</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        th, td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ff9800;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #e68900;
+        }
+        #tituloSemana {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>📅 Calendário de Refeições Futurista 🚀</h2>
+    <button onclick="mudarSemana(-1)">⏪ Semana Anterior</button>
+    <span id="tituloSemana">Semana 1</span>
+    <button onclick="mudarSemana(1)">Semana Seguinte ⏩</button>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>📆 Dia</th>
+                <th>🥐 Matabicho (07h)</th>
+                <th>🍽️ Almoço (12h)</th>
+                <th>☕ Lanche (17h)</th>
+                <th>🌙 Jantar (20h)</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaRefeicoes"></tbody>
+    </table>
+    
+    <script>
+        const menus = [
+            [
+                ['Segunda', 'Pão com chá', 'Arroz com feijão', 'Bolo de cenoura', 'Canja de galinha'],
+                ['Terça', 'Cachupa', 'Funge com carne', 'Torradas', 'Omelete'],
+                ['Quarta', 'Mingau', 'Peixe frito', 'Biscoitos', 'Caldo de peixe'],
+                ['Quinta', 'Pão com queijo', 'Massa com carne', 'Iogurte', 'Sopa de legumes'],
+                ['Sexta', 'Banana frita', 'Arroz de pato', 'Pipoca', 'Sanduíche'],
+                ['Sábado', 'Iogurte', 'Moamba de galinha', 'Frutas', 'Cachupa'],
+                ['Domingo', 'Leite com biscoitos', 'Calulu', 'Bolo de chocolate', 'Sopa de feijão']
+            ],
+            [
+                ['Segunda', 'Papas de aveia', 'Feijão com peixe', 'Bolachas', 'Mufete'],
+                ['Terça', 'Bolo de milho', 'Caril de frango', 'Tapioca', 'Omelete'],
+                ['Quarta', 'Chá com pão', 'Muamba de peixe', 'Pudim', 'Caldo verde'],
+                ['Quinta', 'Leite com cereais', 'Funge de carne', 'Salada de frutas', 'Sopa de legumes'],
+                ['Sexta', 'Café com bolo', 'Arroz de pato', 'Torradas', 'Pizza caseira'],
+                ['Sábado', 'Torradas', 'Calulu de carne', 'Gelatina', 'Cachupa'],
+                ['Domingo', 'Mingau de arroz', 'Feijão tropeiro', 'Croissant', 'Sopa de mandioca']
+            ]
+        ];
+
+        let semanaAtual = 0;
+        
+        function atualizarTabela() {
+            document.getElementById('tituloSemana').innerText = `Semana ${semanaAtual + 1}`;
+            let tabela = document.getElementById('tabelaRefeicoes');
+            tabela.innerHTML = '';
+            menus[semanaAtual].forEach(dia => {
+                let linha = `<tr><td>${dia[0]}</td><td>${dia[1]}</td><td>${dia[2]}</td><td>${dia[3]}</td><td>${dia[4]}</td></tr>`;
+                tabela.innerHTML += linha;
+            });
+        }
+        
+        function mudarSemana(direcao) {
+            semanaAtual = (semanaAtual + direcao + menus.length) % menus.length;
+            atualizarTabela();
+        }
+
+        atualizarTabela();
+    </script>
+</body>
+</html>
