@@ -44,7 +44,7 @@
         button:hover {
             background: #e68900;
         }
-        #tituloSemana {
+        #tituloSemana, #dataAtual, #momentoAtual {
             font-size: 22px;
             font-weight: bold;
             margin: 10px;
@@ -68,7 +68,7 @@
                 padding: 8px 15px;
                 font-size: 14px;
             }
-            #tituloSemana {
+            #tituloSemana, #dataAtual, #momentoAtual {
                 font-size: 18px;
             }
         }
@@ -76,9 +76,9 @@
 </head>
 <body>
     <h2>📅 Cardapio de Refeições 🚀</h2>
-    <button onclick="mudarSemana(-1)">⏪ Anterior </button>
-    <span id="tituloSemana">Semana 1</span>
-    <button onclick="mudarSemana(1)"> Seguinte ⏩</button>
+    <p id="dataAtual"></p>
+    <p id="momentoAtual"></p>
+    <p id="tituloSemana"></p>
     
     <table>
         <thead>
@@ -95,44 +95,60 @@
     
     <script>
         const menus = [
-            [
-                ['Segunda', 'Pão com chá', 'Arroz com feijão', 'Bolo de cenoura', 'Canja de galinha'],
-                ['Terça', 'Cachupa', 'Funge com carne', 'Torradas', 'Omelete'],
-                ['Quarta', 'Mingau', 'Peixe frito', 'Biscoitos', 'Caldo de peixe'],
-                ['Quinta', 'Pão com queijo', 'Massa com carne', 'Iogurte', 'Sopa de legumes'],
-                ['Sexta', 'Banana frita', 'Arroz de pato', 'Pipoca', 'Sanduíche'],
-                ['Sábado', 'Iogurte', 'Moamba de galinha', 'Frutas', 'Cachupa'],
-                ['Domingo', 'Leite com biscoitos', 'Calulu', 'Bolo de chocolate', 'Sopa de feijão']
-            ],
-            [
-                ['Segunda', 'Papas de aveia', 'Feijão com peixe', 'Bolachas', 'Mufete'],
-                ['Terça', 'Bolo de milho', 'Caril de frango', 'Tapioca', 'Omelete'],
-                ['Quarta', 'Chá com pão', 'Muamba de peixe', 'Pudim', 'Caldo verde'],
-                ['Quinta', 'Leite com cereais', 'Funge de carne', 'Salada de frutas', 'Sopa de legumes'],
-                ['Sexta', 'Café com bolo', 'Arroz de pato', 'Torradas', 'Pizza caseira'],
-                ['Sábado', 'Torradas', 'Calulu de carne', 'Gelatina', 'Cachupa'],
-                ['Domingo', 'Mingau de arroz', 'Feijão tropeiro', 'Croissant', 'Sopa de mandioca']
-            ]
+            ['Pão com chá', 'Arroz com feijão', 'Bolo de cenoura', 'Canja de galinha'],
+            ['Cachupa', 'Funge com carne', 'Torradas', 'Omelete'],
+            ['Mingau', 'Peixe frito', 'Biscoitos', 'Caldo de peixe'],
+            ['Pão com queijo', 'Massa com carne', 'Iogurte', 'Sopa de legumes'],
+            ['Banana frita', 'Arroz de pato', 'Pipoca', 'Sanduíche'],
+            ['Iogurte', 'Moamba de galinha', 'Frutas', 'Cachupa'],
+            ['Leite com biscoitos', 'Calulu', 'Bolo de chocolate', 'Sopa de feijão']
         ];
 
-        let semanaAtual = 0;
-        
+        function obterNumeroSemanas() {
+            const hoje = new Date();
+            const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate();
+            return Math.ceil(ultimoDia / 7);
+        }
+
+        function obterSemanaAtual() {
+            const hoje = new Date();
+            return Math.ceil(hoje.getDate() / 7);
+        }
+
+        function obterMomentoAtual() {
+            const hora = new Date().getHours();
+            if (hora >= 7 && hora < 12) return "Matabicho";
+            if (hora >= 12 && hora < 17) return "Almoço";
+            if (hora >= 17 && hora < 20) return "Lanche";
+            return "Jantar";
+        }
+
         function atualizarTabela() {
-            document.getElementById('tituloSemana').innerText = `Semana ${semanaAtual + 1}`;
+            const semanas = obterNumeroSemanas();
+            const semanaAtual = obterSemanaAtual();
+            document.getElementById('tituloSemana').innerText = `Semana ${semanaAtual} de ${semanas}`;
+            document.getElementById('momentoAtual').innerText = `Momento Atual: ${obterMomentoAtual()}`;
             let tabela = document.getElementById('tabelaRefeicoes');
             tabela.innerHTML = '';
-            menus[semanaAtual].forEach(dia => {
-                let linha = `<tr><td>${dia[0]}</td><td>${dia[1]}</td><td>${dia[2]}</td><td>${dia[3]}</td><td>${dia[4]}</td></tr>`;
+            menus.forEach((dia, index) => {
+                let linha = `<tr><td>Dia ${index + 1}</td><td>${dia[0]}</td><td>${dia[1]}</td><td>${dia[2]}</td><td>${dia[3]}</td></tr>`;
                 tabela.innerHTML += linha;
             });
         }
         
-        function mudarSemana(direcao) {
-            semanaAtual = (semanaAtual + direcao + menus.length) % menus.length;
-            atualizarTabela();
+        function atualizarData() {
+            const data = new Date();
+            const opcoes = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('dataAtual').innerText = data.toLocaleDateString('pt-BR', opcoes);
         }
 
+        setInterval(atualizarData, 1000);
+        setInterval(() => {
+            atualizarTabela();
+        }, 60000);
+        
         atualizarTabela();
+        atualizarData();
     </script>
 </body>
 </html>
