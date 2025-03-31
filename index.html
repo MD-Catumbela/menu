@@ -12,7 +12,8 @@
             text-align: center;
         }
         table {
-            width: 80%;
+            width: 90%;
+            max-width: 100%;
             margin: auto;
             border-collapse: collapse;
             background: rgba(255, 255, 255, 0.1);
@@ -24,6 +25,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 15px;
             text-align: center;
+            word-wrap: break-word;
         }
         th {
             background: rgba(255, 255, 255, 0.2);
@@ -46,6 +48,29 @@
             font-size: 22px;
             font-weight: bold;
             margin: 10px;
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            table {
+                font-size: 10px;
+            }
+            th, td {
+                padding: 5px;
+            }
+            button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            #tituloSemana {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
